@@ -1,45 +1,39 @@
 <template>
 	<view class="content">
-		<view class="calendar">
-			<view class="dayFrame" v-for="count in 35">
-				<view class="day" v-if="noEmpty(count)" @click="c(count-firstDay+1)">
-					<view class="dayNum">{{count-firstDay+1}}</view>
-					<solt :day="count-firstDay+1"></solt>
-				</view>
-			</view>
-		</view>
+		<calendarCP :year="year" :month="month" :date="date" :selected="selected" @clickDay="chooseDay">
+			<template v-slot:default="message">
+				<!-- 获取日期 <view>{{message.day}}</view> -->
+				<!-- 是否已选<view>{{message.isSelected}}</view> -->
+				<!-- 是否周日<view>{{message.isSunday}}</view> -->
+				<!-- 是否周六<view>{{message.isSaturday}}</view> -->
+				<!-- 是否当天<view>{{message.isToday}}</view> -->
+				<view>{{message.isSelected?'选了':''}}</view>
+			</template>
+		</calendarCP>
 	</view>
 </template>
 
 <script>
-	import moment from 'moment'
+	
+	import calendarCP from "@/component/calendar_CP.vue"
 	export default {
+		components:{
+			calendarCP
+		},
 		data() {
 			return {
-				year:2019,
-				month:12,
-				date:2
+				'year':2019,
+				'month':12,
+				'date':4,
+				'selected':[1,3,5,7,9]
 			}
 		},
 		onLoad() {
 
 		},
 		methods: {
-			firstDay(){
-				return moment(this.year+'-'+this.month+"-"+this.date,'YYYY-MM-DD').format('e')
-			},
-			lastDay(){
-				return moment(this.year+'-'+this.month+"-"+this.date,'YYYY-MM-DD').endOf('month').format('DD')
-			},
-			noEmpty(num){
-				if(num - this.lastDay()>this.firstDay()){
-					return false;
-				}else{
-					return true;
-				}
-			},
-			c(day){
-				this.$emit("clickDay",day)
+			chooseDay(data){
+				console.log(data)
 			}
 		}
 	}
