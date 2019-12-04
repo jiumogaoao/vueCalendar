@@ -1,9 +1,21 @@
 <template>
 	<view class="calendarCP">
 		<view :class="{dayFrame:1,isSelected:isSelected(count-firstDay),isSunday:isSunday(count-1),isSaturday:isSaturday(count-1),isToday:isToday(count-firstDay)}" v-for="count in 35" :key="count" :count="count">
-			<view class="day" v-if="noEmpty(count-1)&&((count-firstDay)>0)" @click="c(count-firstDay)">
+			<view class="day" v-if="noEmpty(count-1)&&((count-firstDay)>0)" 
+			@click="c({
+				day:count-firstDay,
+				isToday:isToday(count-firstDay),
+				isSelected:isSelected(count-firstDay),
+				isSunday:isSunday(count-1),
+				isSaturday:isSaturday(count-1)
+				})">
 				<view class="dayNum">{{isToday(count-firstDay)?'今天':(count-firstDay)}}</view>
-				<slot :day="count-firstDay" :isToday="isToday(count-firstDay)" :isSelected="isSelected(count-firstDay)" :isSunday="isSunday(count-1)" :isSaturday="isSaturday(count-1)"></slot>
+				<slot 
+				:day="count-firstDay" 
+				:isToday="isToday(count-firstDay)" 
+				:isSelected="isSelected(count-firstDay)" 
+				:isSunday="isSunday(count-1)" 
+				:isSaturday="isSaturday(count-1)"></slot>
 			</view>
 		</view>
 	</view>
@@ -59,8 +71,8 @@
 					return true;
 				}
 			},
-			c(day){
-				this.$emit("clickDay",day)
+			c(dayMessage){
+				this.$emit("clickDay",dayMessage)
 			}
 		},
 		computed: {
